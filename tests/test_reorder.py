@@ -62,6 +62,18 @@ class TestReorder(unittest.TestCase):
 		with self.assertRaises(KeyError):
 			reorder(data, spec)
 
+	def test_data_key_contains_delimiter(self):
+		data = {
+			'key1': {
+				'key2.key3': 'value'
+			}
+		}
+		spec = {
+			'key1.key2.key3': 'key1.data',
+		}
+		with self.assertRaises(KeyError):
+			reorder(data, spec)
+
 
 if __name__ == '__main__':
 	unittest.main()
