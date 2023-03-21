@@ -30,4 +30,5 @@ def locate(index: str, data: dict, make_keys: bool = False):
 				raise KeyError(f'{".".join(path[:i + 1])} does not exist!') from e
 			except TypeError as e:
 				raise KeyError(f'{".".join(path[:i + 1])} is not a dictionary!') from e
+
 	return parent_dict, path[-1]

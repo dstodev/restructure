@@ -54,6 +54,68 @@ class TestReorder(unittest.TestCase):
 		reorder(data, spec)
 		self.assertEqual(expected, data)
 
+	def test_swap_keys_nested(self):
+		data = {
+			'key1': {
+				'key2': 'value1',
+			},
+			'key3': {
+				'key4': 'value2',
+			},
+		}
+		spec = {
+			'key1.key2': 'key3.key4',
+			'key3.key4': 'key1.key2',
+		}
+		expected = {
+			'key1': {
+				'key2': 'value2',
+			},
+			'key3': {
+				'key4': 'value1',
+			},
+		}
+		reorder(data, spec)
+		self.assertEqual(expected, data)
+
+	def test_swap_keys_nested_sibling(self):
+		data = {
+			'key1': {
+				'key2': 'value1',
+			},
+			'key3': {
+				'key4': 'value2',
+			},
+		}
+		spec = {
+			'key1.key2': 'key3.key5',
+		}
+		expected = {
+			'key1': {},
+			'key3': {
+				'key4': 'value2',
+				'key5': 'value1',
+			},
+		}
+		reorder(data, spec)
+		self.assertEqual(expected, data)
+
+	def test_move_to_flatten(self):
+		data = {
+			'key1': {
+				'key2': 'value1',
+			},
+		}
+		spec = {
+			'key1.key2': 'key3',
+		}
+		expected = {
+			'key1': {},
+			'key3': 'value1'
+		}
+		reorder(data, spec)
+		self.assertEqual(expected, data)
+
 	def test_key_conflict(self):
 		data = {
 			'key1': 'value1',

@@ -34,9 +34,6 @@ def reorder(data: dict, specification: dict):
 		}
 	}
 
-	If the reorder specification is not valid, or if a target key already exists, a KeyError will be raised and
-	the data will be
-
 	:param data: Data to reorder.
 	:param specification: Specification of reordering operations to perform.
 	"""
