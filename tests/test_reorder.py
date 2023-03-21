@@ -74,6 +74,18 @@ class TestReorder(unittest.TestCase):
 		with self.assertRaises(KeyError):
 			reorder(data, spec)
 
+	def test_spec_must_be_flat(self):
+		data = {
+			'key1': 'value',
+		}
+		spec = {
+			'key1': {
+				'key2': 'key3',
+			}
+		}
+		with self.assertRaises(KeyError):
+			reorder(data, spec)
+
 
 if __name__ == '__main__':
 	unittest.main()
