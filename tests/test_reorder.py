@@ -131,6 +131,22 @@ class TestReorder(unittest.TestCase):
 
 		self.assertEqual(expected, data)
 
+	def test_key_spec_conflict(self):
+		data = {
+			'key1': 'value1',
+			'key3': 'value2',
+		}
+		spec = {
+			'key1': 'key2',
+			'key3': 'key2',
+		}
+		expected = copy.deepcopy(data)
+
+		with self.assertRaises(KeyError):
+			reorder(data, spec)
+
+		self.assertEqual(expected, data)
+
 	def test_data_key_contains_delimiter(self):
 		data = {
 			'key1': {

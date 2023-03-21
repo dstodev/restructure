@@ -37,6 +37,9 @@ def reorder(data: dict, specification: dict):
 	:param data: Data to reorder.
 	:param specification: Specification of reordering operations to perform.
 	"""
+	if len(specification) != len(set(specification.values())):
+		raise KeyError('Reorder specification contains duplicate destinations!')
+
 	for _, destination in specification.items():
 		try:
 			parent, destination_key = locate(destination, data)
