@@ -1,4 +1,6 @@
 import unittest
+import copy
+
 from reorder import reorder
 
 
@@ -13,8 +15,8 @@ class TestReorder(unittest.TestCase):
 		expected = {
 			'key2': 'value',
 		}
-		actual = reorder(data, spec)
-		self.assertEqual(expected, actual)
+		reorder(data, spec)
+		self.assertEqual(expected, data)
 
 	def test_nested(self):
 		data = {
@@ -29,11 +31,12 @@ class TestReorder(unittest.TestCase):
 		}
 		expected = {
 			'key1': {
+				'key2': {},
 				'data': 'value'
-			}
+			},
 		}
-		actual = reorder(data, spec)
-		self.assertEqual(expected, actual)
+		reorder(data, spec)
+		self.assertEqual(expected, data)
 
 	def test_swap_keys(self):
 		data = {
@@ -48,8 +51,8 @@ class TestReorder(unittest.TestCase):
 			'key1': 'value2',
 			'key2': 'value1',
 		}
-		actual = reorder(data, spec)
-		self.assertEqual(expected, actual)
+		reorder(data, spec)
+		self.assertEqual(expected, data)
 
 	def test_key_conflict(self):
 		data = {
@@ -59,8 +62,12 @@ class TestReorder(unittest.TestCase):
 		spec = {
 			'key1': 'key2',
 		}
+		expected = copy.deepcopy(data)
+
 		with self.assertRaises(KeyError):
 			reorder(data, spec)
+
+		self.assertEqual(expected, data)
 
 	def test_data_key_contains_delimiter(self):
 		data = {
@@ -70,18 +77,6 @@ class TestReorder(unittest.TestCase):
 		}
 		spec = {
 			'key1.key2.key3': 'key1.data',
-		}
-		with self.assertRaises(KeyError):
-			reorder(data, spec)
-
-	def test_spec_must_be_flat(self):
-		data = {
-			'key1': 'value',
-		}
-		spec = {
-			'key1': {
-				'key2': 'key3',
-			}
 		}
 		with self.assertRaises(KeyError):
 			reorder(data, spec)

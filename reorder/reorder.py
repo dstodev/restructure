@@ -1,15 +1,15 @@
-from reorder.flatten import flatten
+from .locate import locate
 
 
-def reorder(input_data: dict, reorder_specification: dict) -> dict:
-	"""Reorder the input_data according to the reorder_specification.
+def reorder(data: dict, specification: dict):
+	"""Reorder data according to specification.
 
-	A reorder specification is a dictionary of keys and values, both in "key-path" format:
+	A reorder specification is a flat map of keys to values, both in "key-path" format:
 
 	A key-path is a dot-delimited string of keys e.g. "key1.key2.key3", useful for indexing
 	into nested dictionaries. For example, "key1.key2.key3" is an index to 'value':
 
-	input = {
+	data = {
 		'key1': {
 			'key2': {
 				'key3': 'value'
@@ -28,33 +28,35 @@ def reorder(input_data: dict, reorder_specification: dict) -> dict:
 
 	Combined with the previous input data would result in a dictionary with the following structure:
 
-	output = {
+	data = {
 		'key1': {
 			'data': 'value'
 		}
 	}
 
-	:param input_data: Data to reorder.
-	:param reorder_specification: Specification of reordering operations to perform.
+	If the reorder specification is not valid, or if a target key already exists, a KeyError will be raised and
+	the data will be
+
+	:param data: Data to reorder.
+	:param specification: Specification of reordering operations to perform.
 	"""
-	flat_data = flatten(input_data)
-	output = {}
-
-	for source, destination in reorder_specification.items():
+	for _, destination in specification.items():
 		try:
-			if source in flat_data:
-				path = source.split('.')
+			parent, destination_key = locate(destination, data)
+		except KeyError:
+			continue
+		if destination_key in parent and destination not in specification.keys():
+			# If the destination key already exists, and it's not the source for another reordering operation,
+			# raise an error.
+			raise KeyError(f'{destination} already exists, refusing overwrite.')
 
-				running_value = input_data
-				running_data = output
+	operations = {}
 
-				for token in path[::-1]:
-					running_value = running_value[token]
-					running_data[token] = {}
-					running_data = running_data[token]
+	for source, destination in specification.items():
+		parent, source_key = locate(source, data)
+		operations[destination] = parent[source_key]
+		del parent[source_key]
 
-				running_data[path[-1]] = running_value
-		except:
-			pass
-
-# TODO: Merge output back into input data
+	for destination, source_dict in operations.items():
+		parent, destination_key = locate(destination, data, make_keys=True)
+		parent[destination_key] = source_dict
