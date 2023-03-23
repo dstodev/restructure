@@ -48,12 +48,11 @@ def restructure(data: dict, specification: dict):
 		destination_parent, destination_key = locate(destination, output, make_keys=True)
 		destination_parent[destination_key] = source_parent[source_key]
 
-	# ignore keys which have been moved to output
-	ignore = set(specification.keys())
-	data_sanitized = merge(data, {}, ignore=ignore)
+	ignore = set(specification.keys())  # ignore keys that have moved (i.e. the sources from the specification)
+	data_sanitized = merge(data, {}, ignore=ignore)  # clear ignored keys by merging with empty dict
 	data_sanitized = prune(data_sanitized)
 
-	return merge(output, data_sanitized)
+	return merge(output, data_sanitized)  # merge sanitized data with output without ignoring any keys from the output
 
 
 def prune(data: dict):

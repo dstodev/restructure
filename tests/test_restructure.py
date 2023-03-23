@@ -18,6 +18,17 @@ class TestRestructure(unittest.TestCase):
 		actual = restructure(data, spec)
 		self.assertEqual(expected, actual)
 
+	def test_same_key(self):
+		data = {
+			'key1': 'value',
+		}
+		spec = {
+			'key1': 'key1',
+		}
+		expected = copy.deepcopy(data)
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
 	def test_nested(self):
 		data = {
 			'key1': {
@@ -34,6 +45,21 @@ class TestRestructure(unittest.TestCase):
 				'data': 'value'
 			},
 		}
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
+	def test_same_key_nested(self):
+		data = {
+			'key1': {
+				'key2': {
+					'key3': 'value'
+				}
+			}
+		}
+		spec = {
+			'key1.key2.key3': 'key1.key2.key3',
+		}
+		expected = copy.deepcopy(data)
 		actual = restructure(data, spec)
 		self.assertEqual(expected, actual)
 
@@ -72,6 +98,47 @@ class TestRestructure(unittest.TestCase):
 			},
 			'key3': {
 				'key4': 'value1',
+			},
+		}
+		data = restructure(data, spec)
+		self.assertEqual(expected, data)
+
+	def test_reverse_nesting(self):
+		data = {
+			'key1': {
+				'key2': 'value1',
+			},
+		}
+		spec = {
+			'key1.key2': 'key2.key1',
+		}
+		expected = {
+			'key2': {
+				'key1': 'value1',
+			},
+		}
+		data = restructure(data, spec)
+		self.assertEqual(expected, data)
+
+	def test_swap_nested_key_order(self):
+		data = {
+			'key1': {
+				'key2': 'value1',
+			},
+			'key3': {
+				'key4': 'value2',
+			},
+		}
+		spec = {
+			'key1.key2': 'key4.key3',
+			'key3.key4': 'key2.key1',
+		}
+		expected = {
+			'key4': {
+				'key3': 'value1',
+			},
+			'key2': {
+				'key1': 'value2',
 			},
 		}
 		data = restructure(data, spec)
