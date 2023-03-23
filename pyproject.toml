@@ -3,12 +3,12 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "reorder"
+name = "restructure"
 version = "0.0.1"
 authors = [
     { name = "dstodev", email = "dstodev@gmail.com" },
 ]
-description = "Reorder dictionary values by key"
+description = "Restructure dictionary values by key"
 readme = "README.md"
 requires-python = ">=3.6"
 

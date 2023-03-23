@@ -1,6 +1,6 @@
 import unittest
 
-from reorder.locate import locate
+from restructure.locate import locate
 
 
 class TestLocate(unittest.TestCase):

@@ -1,10 +1,10 @@
 import unittest
 import copy
 
-from reorder import reorder
+from restructure import restructure
 
 
-class TestReorder(unittest.TestCase):
+class TestRestructure(unittest.TestCase):
 	def test_simple(self):
 		data = {
 			'key1': 'value',
@@ -15,8 +15,8 @@ class TestReorder(unittest.TestCase):
 		expected = {
 			'key2': 'value',
 		}
-		reorder(data, spec)
-		self.assertEqual(expected, data)
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
 
 	def test_nested(self):
 		data = {
@@ -31,12 +31,11 @@ class TestReorder(unittest.TestCase):
 		}
 		expected = {
 			'key1': {
-				'key2': {},
 				'data': 'value'
 			},
 		}
-		reorder(data, spec)
-		self.assertEqual(expected, data)
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
 
 	def test_swap_keys(self):
 		data = {
@@ -51,7 +50,7 @@ class TestReorder(unittest.TestCase):
 			'key1': 'value2',
 			'key2': 'value1',
 		}
-		reorder(data, spec)
+		data = restructure(data, spec)
 		self.assertEqual(expected, data)
 
 	def test_swap_keys_nested(self):
@@ -75,7 +74,7 @@ class TestReorder(unittest.TestCase):
 				'key4': 'value1',
 			},
 		}
-		reorder(data, spec)
+		data = restructure(data, spec)
 		self.assertEqual(expected, data)
 
 	def test_swap_keys_nested_sibling(self):
@@ -91,16 +90,15 @@ class TestReorder(unittest.TestCase):
 			'key1.key2': 'key3.key5',
 		}
 		expected = {
-			'key1': {},
 			'key3': {
 				'key4': 'value2',
 				'key5': 'value1',
 			},
 		}
-		reorder(data, spec)
+		data = restructure(data, spec)
 		self.assertEqual(expected, data)
 
-	def test_move_to_flatten(self):
+	def test_move_to_separate_flat_key(self):
 		data = {
 			'key1': {
 				'key2': 'value1',
@@ -110,10 +108,26 @@ class TestReorder(unittest.TestCase):
 			'key1.key2': 'key3',
 		}
 		expected = {
-			'key1': {},
 			'key3': 'value1'
 		}
-		reorder(data, spec)
+		data = restructure(data, spec)
+		self.assertEqual(expected, data)
+
+	def test_move_to_same_flat_key(self):
+		data = {
+			'key1': {
+				'key2': {
+					'key3': 'value1',
+				}
+			},
+		}
+		spec = {
+			'key1.key2.key3': 'key1',
+		}
+		expected = {
+			'key1': 'value1'
+		}
+		data = restructure(data, spec)
 		self.assertEqual(expected, data)
 
 	def test_key_conflict(self):
@@ -127,7 +141,7 @@ class TestReorder(unittest.TestCase):
 		expected = copy.deepcopy(data)
 
 		with self.assertRaises(KeyError):
-			reorder(data, spec)
+			restructure(data, spec)
 
 		self.assertEqual(expected, data)
 
@@ -143,7 +157,7 @@ class TestReorder(unittest.TestCase):
 		expected = copy.deepcopy(data)
 
 		with self.assertRaises(KeyError):
-			reorder(data, spec)
+			restructure(data, spec)
 
 		self.assertEqual(expected, data)
 
@@ -157,7 +171,7 @@ class TestReorder(unittest.TestCase):
 			'key1.key2.key3': 'key1.data',
 		}
 		with self.assertRaises(KeyError):
-			reorder(data, spec)
+			restructure(data, spec)
 
 
 if __name__ == '__main__':

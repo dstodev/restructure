@@ -5,17 +5,17 @@ def locate(index: str, data: dict, make_keys: bool = False):
 
 	Does not assert that the target key exists, only tells you where it would be.
 
-	if make_keys is True, then the function will create parent keys along the way if they do not exist.
-
 	e.g.
 
-	index = key1.key2
-	data = {
-		'key1': {
-			'key2': ...
+		index = key1.key2
+		data = {
+			'key1': {
+				'key2': ...
+			}
 		}
-	}
-	return data['key1'], 'key2'
+		return data['key1'], 'key2'
+
+	When make_keys is True, creates parent keys along the way if they do not exist.
 	"""
 	path = index.split('.')
 	parent_dict = data
