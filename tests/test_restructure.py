@@ -197,6 +197,23 @@ class TestRestructure(unittest.TestCase):
 		data = restructure(data, spec)
 		self.assertEqual(expected, data)
 
+	def test_move_to_nested(self):
+		data = {
+			'key1': 'value1',
+		}
+		spec = {
+			'key1': 'key1.key2.key3',
+		}
+		expected = {
+			'key1': {
+				'key2': {
+					'key3': 'value1',
+				}
+			},
+		}
+		data = restructure(data, spec)
+		self.assertEqual(expected, data)
+
 	def test_key_conflict(self):
 		data = {
 			'key1': 'value1',
@@ -239,6 +256,25 @@ class TestRestructure(unittest.TestCase):
 		}
 		with self.assertRaises(KeyError):
 			restructure(data, spec)
+
+	def test_multiple_from_one_chain(self):
+		data = {
+			'key1': {
+				'key2': 'value1',
+			},
+		}
+		spec = {
+			'key1': 'key3',
+			'key1.key2': 'key4',
+		}
+		expected = {
+			'key3': {
+				'key2': 'value1',
+			},
+			'key4': 'value1',
+		}
+		data = restructure(data, spec)
+		self.assertEqual(expected, data)
 
 
 if __name__ == '__main__':

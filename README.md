@@ -9,7 +9,10 @@ def restructure(data: dict, specification: dict):
 	...
 ```
 
-It is useful to restructure a dictionary. For example, to move a nested dictionary to the top:
+It is useful to restructure where keys are in a dictionary, for example to
+upgrade a configuration file to a new schema.
+
+For example, to move a nested dictionary to the top-level:
 
 ```python
 data = {
@@ -24,6 +27,24 @@ spec = {
 }
 output = {
 	'key1': 'value'
+}
+```
+
+or the opposite:
+
+```python
+data = {
+	'key1': 'value'
+}
+spec = {
+	'key1': 'key1.key2.key3',
+}
+output = {
+	'key1': {
+		'key2': {
+			'key3': 'value'
+		}
+	}
 }
 ```
 
@@ -52,19 +73,7 @@ output = {
 }
 ```
 
-Or to simply rename a key:
-
-```python
-data = {
-	'key1': 'value1',
-}
-spec = {
-	'key1': 'key2',
-}
-output = {
-	'key2': 'value1',
-}
-```
+etc.
 
 ## For Developers
 
