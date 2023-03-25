@@ -5,6 +5,17 @@ from restructure import restructure
 
 
 class TestRestructure(unittest.TestCase):
+	def test_no_operations(self):
+		data = {
+			'key1': 'value',
+		}
+		spec = {}
+		expected = {
+			'key1': 'value',
+		}
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
 	def test_simple(self):
 		data = {
 			'key1': 'value',
@@ -14,6 +25,21 @@ class TestRestructure(unittest.TestCase):
 		}
 		expected = {
 			'key2': 'value',
+		}
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
+	def test_preserves_unspecified(self):
+		data = {
+			'key1': 'value1',
+			'key3': 'value3',
+		}
+		spec = {
+			'key1': 'key2',
+		}
+		expected = {
+			'key2': 'value1',
+			'key3': 'value3',
 		}
 		actual = restructure(data, spec)
 		self.assertEqual(expected, actual)
