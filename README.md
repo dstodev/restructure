@@ -97,8 +97,19 @@ etc.
 
 ### Testing
 
-To run unit tests, run the following command from the root directory of the project:
+To run unit tests, run the following command from the project root directory:
 
 ```bash
 python -m unittest
+```
+
+### Packaging
+
+Before packaging, update the version number in `pyproject.toml`
+
+To package & upload the project, run the following commands from the project root directory:
+
+```bash
+python -m build
+python -m twine upload dist/*
 ```
