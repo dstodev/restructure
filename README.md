@@ -12,20 +12,29 @@ def restructure(data: dict, specification: dict):
 It is useful to restructure where keys are in a dictionary, for example to
 upgrade a configuration file to a new schema.
 
+## Usage
+
+```python
+from restructure import restructure
+```
+
 For example, to move a nested dictionary to the top-level:
 
 ```python
-data = {
+input_data = {
 	'key1': {
 		'key2': {
 			'key3': 'value'
 		}
 	}
 }
-spec = {
+specification = {
 	'key1.key2.key3': 'key1',
 }
-output = {
+
+output = restructure(input_data, specification)
+
+assert output == {
 	'key1': 'value'
 }
 ```
@@ -33,13 +42,16 @@ output = {
 or the opposite:
 
 ```python
-data = {
+input_data = {
 	'key1': 'value'
 }
-spec = {
+specification = {
 	'key1': 'key1.key2.key3',
 }
-output = {
+
+output = restructure(input_data, specification)
+
+assert output == {
 	'key1': {
 		'key2': {
 			'key3': 'value'
@@ -51,7 +63,7 @@ output = {
 Or to swap keys:
 
 ```python
-data = {
+input_data = {
 	'key1': {
 		'key2': 'value1',
 	},
@@ -59,11 +71,14 @@ data = {
 		'key4': 'value2',
 	},
 }
-spec = {
+specification = {
 	'key1.key2': 'key3.key4',
 	'key3.key4': 'key1.key2',
 }
-output = {
+
+output = restructure(input_data, specification)
+
+assert output == {
 	'key1': {
 		'key2': 'value2',
 	},
@@ -77,7 +92,8 @@ etc.
 
 ## For Developers
 
-Following package structure [outlined here.](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
+- Follows [Semantic Versioning 2.0.0](https://semver.org/)
+- Follows [this package structure](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
 
 ### Testing
 
