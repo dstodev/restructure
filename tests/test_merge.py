@@ -103,6 +103,30 @@ class TestMerge(unittest.TestCase):
 		output = merge(data1, data2)
 		self.assertEqual(expected, output)
 
+	def test_merge_conflict(self):
+		data1 = {
+			'key1': 'value1',
+		}
+		data2 = {
+			'key1': 'value2',
+		}
+		with self.assertRaisesRegex(KeyError, 'key1'):
+			merge(data1, data2)
+
+	def test_nested_merge_conflict(self):
+		data1 = {
+			'key1': {
+				'key2': 'value1',
+			},
+		}
+		data2 = {
+			'key1': {
+				'key2': 'value2',
+			},
+		}
+		with self.assertRaisesRegex(KeyError, 'key1.key2'):
+			merge(data1, data2)
+
 
 if __name__ == '__main__':
 	unittest.main()

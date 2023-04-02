@@ -5,6 +5,9 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 	:param right: Right dictionary.
 	:param ignore: Keys to ignore when merging, specified as a set of key-paths.
 	"""
+	if ignore is None:
+		ignore = set()
+
 	keypath = keypath_for(__path)
 	left_keys = set(left.keys())
 	right_keys = set(right.keys())
@@ -15,7 +18,7 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 	for key in conflicts:
 		path = keypath(key)
 
-		if ignore and path in ignore:
+		if path in ignore:
 			continue
 
 		left_value = left[key]
@@ -26,7 +29,7 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 		elif left_value is right_value:
 			output[key] = left_value
 		else:
-			raise KeyError(f'Conflict at key {key}')
+			raise KeyError(f'Conflict at key {path}')
 
 	output.update(combine(left, left_keys, right_keys, ignore, __path))
 	output.update(combine(right, right_keys, left_keys, ignore, __path))
@@ -49,7 +52,7 @@ def combine(data: dict, left_keys: set, right_keys: set, ignore: set, __path: st
 	for key in left_keys - right_keys:
 		path = keypath(key)
 
-		if ignore and path in ignore:
+		if path in ignore:
 			continue
 
 		left_value = data[key]

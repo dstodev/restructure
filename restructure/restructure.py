@@ -19,7 +19,8 @@ def restructure(data: dict, specification: dict):
 	}
 
 	In a restructure specification, both the keys and values are key-paths. The dictionary keys are
-	the keys to be restructured, and the dictionary values are the new keys to use.
+	the keys to be restructured (the "sources"), and the dictionary values are the new keys to use
+	(the "destinations").
 
 	So, for example, the restructure specification:
 
@@ -48,11 +49,12 @@ def restructure(data: dict, specification: dict):
 		destination_parent, destination_key = locate(destination, output, make_keys=True)
 		destination_parent[destination_key] = source_parent[source_key]
 
-	ignore = set(specification.keys())  # ignore keys that have moved (i.e. the sources from the specification)
-	data_sanitized = merge(data, {}, ignore=ignore)  # clear ignored keys by merging with empty dict
-	data_sanitized = prune(data_sanitized)
+	# Remove reorder sources from data
+	ignore = set(specification.keys())
+	data = merge(data, {}, ignore=ignore)  # clear ignored keys by merging with empty dict
 
-	return merge(output, data_sanitized)  # merge sanitized data with output without ignoring any keys from the output
+	data = prune(data)
+	return merge(output, data)
 
 
 def prune(data: dict):
