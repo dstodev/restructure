@@ -482,6 +482,31 @@ class TestRestructure(unittest.TestCase):
 		}
 		self.assertEqual(expected, actual)
 
+	def test_merge_dictionaries(self):
+		data = {
+			'key1': {
+				'key2': {
+					'key3': 'value1',
+				}
+			},
+			'key4': {
+				'key5': 'value2',
+			}
+		}
+		spec = {
+			'key4': 'key1.key2',
+		}
+		expected = {
+			'key1': {
+				'key2': {
+					'key3': 'value1',
+					'key5': 'value2',
+				}
+			},
+		}
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
 	unittest.main()
