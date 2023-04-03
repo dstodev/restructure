@@ -9,14 +9,14 @@ def restructure(data: dict, specification: dict):
 	"key-path" format:
 
 	A key-path is a dot-delimited string of keys e.g. 'key1.key2.key3', useful for indexing
-	into nested dictionaries. For example, 'key1.key2.key3' is an index to 'value':
+	into nested dictionaries. For example, 'key1.key2.key3' is an index to 'value1':
 
 	data = {
 		'key1': {
 			'key2': {
 				'key3': 'value',
-			}
-		}
+			},
+		},
 	}
 
 	In a restructure specification, both the keys and values are key-paths. The dictionary keys are
@@ -26,15 +26,15 @@ def restructure(data: dict, specification: dict):
 	So, for example, the restructure specification:
 
 	spec = {
-		'key1.key2.key3': 'key1.data',
+		'key1.key2.key3': 'key.data',
 	}
 
 	Combined with the previous input data would result in a dictionary with the following structure:
 
 	output = {
-		'key1': {
+		'key': {
 			'data': 'value',
-		}
+		},
 	}
 
 	Destinations can also be sets of key-paths, in which case the source value will be copied to
@@ -44,8 +44,8 @@ def restructure(data: dict, specification: dict):
 		'key1': {
 			'key2': {
 				'key3': 'value1',
-			}
-		}
+			},
+		},
 	}
 	spec = {
 		'key1.key2.key3': {'key1.key2.key3.key4', 'key1.key2.key5', 'key1.key6', 'key7'},

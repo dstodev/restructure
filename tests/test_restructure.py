@@ -7,24 +7,24 @@ from restructure import restructure
 class TestRestructure(unittest.TestCase):
 	def test_no_operations(self):
 		data = {
-			'key1': 'value',
+			'key1': 'value1',
 		}
 		spec = {}
 		expected = {
-			'key1': 'value',
+			'key1': 'value1',
 		}
 		actual = restructure(data, spec)
 		self.assertEqual(expected, actual)
 
 	def test_simple(self):
 		data = {
-			'key1': 'value',
+			'key1': 'value1',
 		}
 		spec = {
 			'key1': 'key2',
 		}
 		expected = {
-			'key2': 'value',
+			'key2': 'value1',
 		}
 		actual = restructure(data, spec)
 		self.assertEqual(expected, actual)
@@ -59,16 +59,16 @@ class TestRestructure(unittest.TestCase):
 		data = {
 			'key1': {
 				'key2': {
-					'key3': 'value'
-				}
-			}
+					'key3': 'value',
+				},
+			},
 		}
 		spec = {
-			'key1.key2.key3': 'key1.data',
+			'key1.key2.key3': 'key.data',
 		}
 		expected = {
-			'key1': {
-				'data': 'value'
+			'key': {
+				'data': 'value',
 			},
 		}
 		actual = restructure(data, spec)
@@ -78,9 +78,9 @@ class TestRestructure(unittest.TestCase):
 		data = {
 			'key1': {
 				'key2': {
-					'key3': 'value'
-				}
-			}
+					'key3': 'value',
+				},
+			},
 		}
 		spec = {
 			'key1.key2.key3': 'key1.key2.key3',
@@ -201,7 +201,7 @@ class TestRestructure(unittest.TestCase):
 			'key1.key2': 'key3',
 		}
 		expected = {
-			'key3': 'value1'
+			'key3': 'value1',
 		}
 		data = restructure(data, spec)
 		self.assertEqual(expected, data)
@@ -211,14 +211,14 @@ class TestRestructure(unittest.TestCase):
 			'key1': {
 				'key2': {
 					'key3': 'value1',
-				}
+				},
 			},
 		}
 		spec = {
 			'key1.key2.key3': 'key1',
 		}
 		expected = {
-			'key1': 'value1'
+			'key1': 'value1',
 		}
 		data = restructure(data, spec)
 		self.assertEqual(expected, data)
@@ -234,7 +234,7 @@ class TestRestructure(unittest.TestCase):
 			'key1': {
 				'key2': {
 					'key3': 'value1',
-				}
+				},
 			},
 		}
 		data = restructure(data, spec)
@@ -270,8 +270,8 @@ class TestRestructure(unittest.TestCase):
 	def test_data_key_contains_delimiter(self):
 		data = {
 			'key1': {
-				'key2.key3': 'value'
-			}
+				'key2.key3': ...,
+			},
 		}
 		spec = {
 			'key1.key2.key3': 'key1.data',
@@ -356,7 +356,7 @@ class TestRestructure(unittest.TestCase):
 		data = {
 			'key1': {
 				'key2': 'value1',
-			}
+			},
 		}
 		spec = {
 			'key1.key2': {'key3.key4', 'key5.key6'},
@@ -414,8 +414,8 @@ class TestRestructure(unittest.TestCase):
 			'key1': {
 				'key2': {
 					'key3': 'value1',
-				}
-			}
+				},
+			},
 		}
 		spec = {
 			'key1.key2.key3': {'key1.key2.key3.key4', 'key1.key2.key5', 'key1.key6', 'key7'},
@@ -439,7 +439,7 @@ class TestRestructure(unittest.TestCase):
 		data = {
 			'key1': {
 				'key2': 'value1',
-			}
+			},
 		}
 		spec = {
 			'key1.key2': {'key1.key2', 'key1'},
@@ -451,7 +451,7 @@ class TestRestructure(unittest.TestCase):
 		data = {
 			'key1': {
 				'key2': 'value1',
-			}
+			},
 		}
 		spec = {
 			'key1.key2': {'key1.key2', 'key1.key2.key3'},
@@ -464,8 +464,8 @@ class TestRestructure(unittest.TestCase):
 			'key1': {
 				'key2': {
 					'key3': 'value1',
-				}
-			}
+				},
+			},
 		}
 		spec = {
 			'key1.key2': 'key1.key2.key3',
@@ -476,9 +476,9 @@ class TestRestructure(unittest.TestCase):
 				'key2': {
 					'key3': {
 						'key3': 'value1',
-					}
-				}
-			}
+					},
+				},
+			},
 		}
 		self.assertEqual(expected, actual)
 
@@ -487,11 +487,11 @@ class TestRestructure(unittest.TestCase):
 			'key1': {
 				'key2': {
 					'key3': 'value1',
-				}
+				},
 			},
 			'key4': {
 				'key5': 'value2',
-			}
+			},
 		}
 		spec = {
 			'key4': 'key1.key2',
@@ -501,7 +501,7 @@ class TestRestructure(unittest.TestCase):
 				'key2': {
 					'key3': 'value1',
 					'key5': 'value2',
-				}
+				},
 			},
 		}
 		actual = restructure(data, spec)
@@ -512,7 +512,7 @@ class TestRestructure(unittest.TestCase):
 			'key1': {
 				'key2': {
 					'key3': 'value1',
-				}
+				},
 			},
 			'key4': {
 				'key5': 'value2',
@@ -521,14 +521,14 @@ class TestRestructure(unittest.TestCase):
 		}
 		spec = {
 			'key4': 'key1.key2',
-			'key6': 'key1.key2.key3'
+			'key6': 'key1.key2.key3',
 		}
 		expected = {
 			'key1': {
 				'key2': {
 					'key3': 'value1',
 					'key5': 'value2',
-				}
+				},
 			},
 		}
 		actual = restructure(data, spec)

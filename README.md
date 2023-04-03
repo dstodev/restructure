@@ -27,17 +27,17 @@ input_data = {
 	'key1': {
 		'key2': {
 			'key3': 'value',
-		}
-	}
+		},
+	},
 }
 specification = {
-	'key1.key2.key3': 'key1',
+	'key1.key2.key3': 'key',
 }
 
 output = restructure(input_data, specification)
 
 assert output == {
-	'key1': 'value',
+	'key': 'value',
 }
 ```
 
@@ -45,10 +45,10 @@ or the opposite:
 
 ```python
 input_data = {
-	'key1': 'value'
+	'key': 'value',
 }
 specification = {
-	'key1': 'key1.key2.key3',
+	'key': 'key1.key2.key3',
 }
 
 output = restructure(input_data, specification)
@@ -57,7 +57,7 @@ assert output == {
 	'key1': {
 		'key2': {
 			'key3': 'value',
-		}
+		},
 	}
 }
 ```
@@ -99,8 +99,8 @@ input_data = {
 	'key1': {
 		'key2': {
 			'key3': 'value1',
-		}
-	}
+		},
+	},
 }
 specification = {
 	'key1.key2.key3': {'key1.key2.key3.key4', 'key1.key2.key5', 'key1.key6', 'key7'},
@@ -131,7 +131,7 @@ input_data = {
 	'key1': {
 		'key2': {
 			'key3': 'value1',
-		}
+		},
 	},
 	'key4': {
 		'key5': 'value2',
@@ -140,7 +140,7 @@ input_data = {
 }
 specification = {
 	'key4': 'key1.key2',
-	'key6': 'key1.key2.key3'
+	'key6': 'key1.key2.key3',
 }
 
 output = restructure(input_data, specification)
@@ -150,7 +150,7 @@ assert output == {
 		'key2': {
 			'key3': 'value1',
 			'key5': 'value2',
-		}
+		},
 	},
 }
 ```

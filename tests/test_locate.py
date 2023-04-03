@@ -22,7 +22,7 @@ class TestLocate(unittest.TestCase):
 		data = {
 			'key1': {
 				'key2': ...,
-			}
+			},
 		}
 		parent, key = locate('key1.key2', data)
 		self.assertIs(data['key1'], parent)
@@ -63,7 +63,7 @@ class TestLocate(unittest.TestCase):
 		data = {
 			'key1': {
 				'key2': ...,
-			}
+			},
 		}
 		with self.assertRaisesRegex(TypeError, r'Value at key: key1.key2 is not a dictionary'):
 			locate('key1.key2.key3', data)
