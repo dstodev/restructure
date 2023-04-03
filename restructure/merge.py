@@ -29,7 +29,7 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 
 		if isinstance(left_value, dict) and isinstance(right_value, dict):
 			output[key] = merge(left_value, right_value, ignore, path)
-		elif left_value is right_value:
+		elif left_value == right_value:
 			output[key] = left_value
 		else:
 			raise KeyError(f'Conflict at key: {path}')

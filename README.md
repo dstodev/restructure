@@ -18,7 +18,9 @@ upgrade a configuration file to a new schema.
 from restructure import restructure
 ```
 
-For example, to move a nested dictionary to the top-level:
+### Moving Keys
+
+To move a nested dictionary to the top-level:
 
 ```python
 input_data = {
@@ -88,7 +90,70 @@ assert output == {
 }
 ```
 
-etc.
+### Copying Keys
+
+Keys can be copied using sets of key-paths:
+
+```python
+input_data = {
+	'key1': {
+		'key2': {
+			'key3': 'value1',
+		}
+	}
+}
+specification = {
+	'key1.key2.key3': {'key1.key2.key3.key4', 'key1.key2.key5', 'key1.key6', 'key7'},
+}
+
+output = restructure(input_data, specification)
+
+assert output == {
+	'key1': {
+		'key2': {
+			'key3': {
+				'key4': 'value1',
+			},
+			'key5': 'value1',
+		},
+		'key6': 'value1',
+	},
+	'key7': 'value1',
+}
+```
+
+### Merging Keys
+
+Keys which contain dictionaries or equivalent values can be merged:
+
+```python
+input_data = {
+	'key1': {
+		'key2': {
+			'key3': 'value1',
+		}
+	},
+	'key4': {
+		'key5': 'value2',
+	},
+	'key6': 'value1',
+}
+specification = {
+	'key4': 'key1.key2',
+	'key6': 'key1.key2.key3'
+}
+
+output = restructure(input_data, specification)
+
+assert output == {
+	'key1': {
+		'key2': {
+			'key3': 'value1',
+			'key5': 'value2',
+		}
+	},
+}
+```
 
 ## For Developers
 
