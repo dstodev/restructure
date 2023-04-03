@@ -31,7 +31,10 @@ def locate(index: str, data: dict, make_keys: bool = False):
 			except TypeError as e:
 				path_str = ".".join(path[:i])
 				if path_str:
-					path_str = f' at {path_str}'
-				raise KeyError(f'Value{path_str} is not a dictionary!') from e
+					path_str = f' at key: {path_str}'
+				raise TypeError(f'Value{path_str} is not a dictionary!') from e
+
+	if not isinstance(parent_dict, dict):
+		raise TypeError(f'Value at key: {".".join(path[:-1])} is not a dictionary!')
 
 	return parent_dict, path[-1]

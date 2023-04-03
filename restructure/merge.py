@@ -29,7 +29,7 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 		elif left_value is right_value:
 			output[key] = left_value
 		else:
-			raise KeyError(f'Conflict at key {path}')
+			raise KeyError(f'Conflict at key: {path}')
 
 	output.update(combine(left, left_keys, right_keys, ignore, __path))
 	output.update(combine(right, right_keys, left_keys, ignore, __path))
