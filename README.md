@@ -24,7 +24,7 @@ For example, to move a nested dictionary to the top-level:
 input_data = {
 	'key1': {
 		'key2': {
-			'key3': 'value'
+			'key3': 'value',
 		}
 	}
 }
@@ -35,7 +35,7 @@ specification = {
 output = restructure(input_data, specification)
 
 assert output == {
-	'key1': 'value'
+	'key1': 'value',
 }
 ```
 
@@ -54,7 +54,7 @@ output = restructure(input_data, specification)
 assert output == {
 	'key1': {
 		'key2': {
-			'key3': 'value'
+			'key3': 'value',
 		}
 	}
 }

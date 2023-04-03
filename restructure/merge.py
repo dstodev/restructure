@@ -4,6 +4,9 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 	:param left: Left dictionary.
 	:param right: Right dictionary.
 	:param ignore: Keys to ignore when merging, specified as a set of key-paths.
+	:param __path: Internal use; used to track the key-path of the current merge operation.
+	:return: Merged dictionary. Does not modify input dictionaries.
+	:raises KeyError: A conflict is encountered.
 	"""
 	if ignore is None:
 		ignore = set()

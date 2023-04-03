@@ -321,7 +321,7 @@ class TestRestructure(unittest.TestCase):
 			'key1': 'key3',
 			'key1.key2': 'key3',
 		}
-		with self.assertRaisesRegex(KeyError, r'key1.key2'):
+		with self.assertRaisesRegex(KeyError, r'key3'):
 			restructure(data, spec)
 
 	def test_duplicate_set_destinations(self):
@@ -334,7 +334,7 @@ class TestRestructure(unittest.TestCase):
 			'key1': {'key3', 'key4'},
 			'key1.key2': 'key3',
 		}
-		with self.assertRaisesRegex(KeyError, r'key1.key2'):
+		with self.assertRaisesRegex(KeyError, r'key3'):
 			restructure(data, spec)
 
 	def test_multiple_destinations_same_source(self):
@@ -444,7 +444,7 @@ class TestRestructure(unittest.TestCase):
 		spec = {
 			'key1.key2': {'key1.key2', 'key1'},
 		}
-		with self.assertRaisesRegex(KeyError, r'key1.key2'):
+		with self.assertRaisesRegex(KeyError, r'key1'):
 			restructure(data, spec)
 
 	def test_copy_to_child_conflict(self):

@@ -16,6 +16,13 @@ def locate(index: str, data: dict, make_keys: bool = False):
 		return data['key1'], 'key2'
 
 	When make_keys is True, creates parent keys along the way if they do not exist.
+
+	:param index: The key-path to locate.
+	:param data: The dictionary to search.
+	:param make_keys: Whether to create parent keys along the way if they do not exist.
+	:returns: A tuple of the format (parent_dict, target_key)
+	:raises KeyError: A parent key along the key-path does not exist, and make_keys is False.
+	:raises TypeError: A parent key along the key-path is not a dictionary.
 	"""
 	path = index.split('.')
 	parent_dict = data

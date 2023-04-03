@@ -127,6 +127,17 @@ class TestMerge(unittest.TestCase):
 		with self.assertRaisesRegex(KeyError, 'key1.key2'):
 			merge(data1, data2)
 
+	def test_merge_preserves_input_data(self):
+		data1 = {
+			'key1': 'value1',
+		}
+		data2 = {
+			'key2': 'value2',
+		}
+		merge(data1, data2)
+		self.assertEqual({'key1': 'value1'}, data1)
+		self.assertEqual({'key2': 'value2'}, data2)
+
 
 if __name__ == '__main__':
 	unittest.main()

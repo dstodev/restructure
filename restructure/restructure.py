@@ -14,7 +14,7 @@ def restructure(data: dict, specification: dict):
 	data = {
 		'key1': {
 			'key2': {
-				'key3': 'value'
+				'key3': 'value',
 			}
 		}
 	}
@@ -33,7 +33,7 @@ def restructure(data: dict, specification: dict):
 
 	output = {
 		'key1': {
-			'data': 'value'
+			'data': 'value',
 		}
 	}
 
@@ -65,6 +65,7 @@ def restructure(data: dict, specification: dict):
 
 	:param data: Data to restructure.
 	:param specification: Specification of restructuring operations to perform.
+	:return: Restructured data. Does not modify input data.
 	"""
 	output = {}
 
@@ -77,23 +78,11 @@ def restructure(data: dict, specification: dict):
 		else:
 			targets.add(destination)
 
-		err_msg = f'Conflicting restructure destinations for source: {source}!'
-
 		for target in targets:
-			try:
-				destination_parent, destination_key = locate(target, output, make_keys=True)
-
-				if destination_key in destination_parent:
-					# if the destination key already exists, it must be because another operation
-					# put a value there i.e. a conflicting destination
-					raise KeyError(err_msg)
-
-				destination_parent[destination_key] = source_parent[source_key]
-			except TypeError:
-				# raised by locate() when a destination_parent is not a dict
-				# if destination_parent is not a dict, it must be because another operation
-				# put a value there i.e. a conflicting destination
-				raise KeyError(err_msg)
+			target_output = {}
+			destination_parent, destination_key = locate(target, target_output, make_keys=True)
+			destination_parent[destination_key] = source_parent[source_key]
+			output = merge(output, target_output)
 
 	# Remove reorder sources from data
 	ignore = set(specification.keys())
