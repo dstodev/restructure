@@ -1,3 +1,6 @@
+from .combine import combine
+
+
 def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 	"""Recursively merge two dictionaries.
 
@@ -21,20 +24,8 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 	for key in conflicts:
 		path = keypath(key)
 
-		if path in ignore:
-			continue
-
-		left_value = left[key]
-		right_value = right[key]
-
-		if isinstance(left_value, dict) and isinstance(right_value, dict):
-			output[key] = merge(left_value, right_value, ignore, path)
-		elif left_value == right_value:
-			output[key] = left_value
-		else:
-			# TODO: If types match & both support a combine method, such as a set union or list
-			#       extend, use that instead of raising an error.
-			raise KeyError(f'Conflict at key: {path}')
+		if path not in ignore:
+			output[key] = combine(left[key], right[key], ignore, path)
 
 	output.update(add_keys_from(left, left_keys, right_keys, ignore, __path))
 	output.update(add_keys_from(right, right_keys, left_keys, ignore, __path))
