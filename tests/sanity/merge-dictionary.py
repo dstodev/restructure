@@ -11,7 +11,7 @@ def main():
 					'key3a': 'value3a',
 				},
 			},
-		}
+		},
 	}
 	data_2 = {
 		'key1': {
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 					'key3b': 'value3b',
 				},
 			},
-		}
+		},
 	}
 	
 	If the value types in conflict are not dictionaries, the merge is more complicated; perhaps lists are concatenated,

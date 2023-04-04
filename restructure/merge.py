@@ -4,7 +4,7 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 	:param left: Left dictionary.
 	:param right: Right dictionary.
 	:param ignore: Keys to ignore when merging, specified as a set of key-paths.
-	:param __path: Internal use; used to track the key-path of the current merge operation.
+	:param __path: Internal; used to track the key-path of the current merge operation.
 	:return: Merged dictionary. Does not modify input dictionaries.
 	:raises KeyError: A conflict is encountered.
 	"""
@@ -32,15 +32,19 @@ def merge(left: dict, right: dict, ignore: set = None, __path: str = ''):
 		elif left_value == right_value:
 			output[key] = left_value
 		else:
+			# TODO: If types match & both support a combine method, such as a set union or list
+			#       extend, use that instead of raising an error.
 			raise KeyError(f'Conflict at key: {path}')
 
-	output.update(combine(left, left_keys, right_keys, ignore, __path))
-	output.update(combine(right, right_keys, left_keys, ignore, __path))
+	output.update(add_keys_from(left, left_keys, right_keys, ignore, __path))
+	output.update(add_keys_from(right, right_keys, left_keys, ignore, __path))
 
 	return output
 
 
 def keypath_for(__path: str):
+	"""Helper function to generate a keypath function for the current level of recursion."""
+
 	def keypath(key_: str):
 		# captures __path parameter
 		return f'{__path}.{key_}' if __path else key_
@@ -48,7 +52,8 @@ def keypath_for(__path: str):
 	return keypath
 
 
-def combine(data: dict, left_keys: set, right_keys: set, ignore: set, __path: str):
+def add_keys_from(data: dict, left_keys: set, right_keys: set, ignore: set, __path: str):
+	"""Returns keys from data if the keys exist in left_keys and not right_keys."""
 	keypath = keypath_for(__path)
 	output = {}
 

@@ -79,10 +79,11 @@ def restructure(data: dict, specification: dict):
 			targets.add(destination)
 
 		for target in targets:
-			target_output = {}
-			destination_parent, destination_key = locate(target, target_output, make_keys=True)
-			destination_parent[destination_key] = source_parent[source_key]
-			output = merge(output, target_output)
+			if target:
+				target_output = {}
+				destination_parent, destination_key = locate(target, target_output, make_keys=True)
+				destination_parent[destination_key] = source_parent[source_key]
+				output = merge(output, target_output)
 
 	# Remove reorder sources from data
 	ignore = set(specification.keys())

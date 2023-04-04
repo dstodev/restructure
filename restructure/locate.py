@@ -10,8 +10,8 @@ def locate(index: str, data: dict, make_keys: bool = False):
 		index = key1.key2
 		data = {
 			'key1': {
-				'key2': ...
-			}
+				'key2': ...,
+			},
 		}
 		return data['key1'], 'key2'
 

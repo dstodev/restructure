@@ -534,6 +534,59 @@ class TestRestructure(unittest.TestCase):
 		actual = restructure(data, spec)
 		self.assertEqual(expected, actual)
 
+	def test_clear_flat_key_by_None(self):
+		data = {
+			'key1': 'value1',
+		}
+		spec = {
+			'key1': None,
+		}
+		expected = {}
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
+	def test_clear_flat_key_by_empty_string(self):
+		data = {
+			'key1': 'value1',
+		}
+		spec = {
+			'key1': '',
+		}
+		expected = {}
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
+	def test_clear_child_key_clears_empty_chain(self):
+		data = {
+			'key1': {
+				'key2': 'value1',
+			},
+		}
+		spec = {
+			'key1.key2': None,
+		}
+		expected = {}
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
+	def test_clear_child_key(self):
+		data = {
+			'key1': {
+				'key2': 'value1',
+				'key3': 'value2',
+			},
+		}
+		spec = {
+			'key1.key2': None,
+		}
+		expected = {
+			'key1': {
+				'key3': 'value2',
+			},
+		}
+		actual = restructure(data, spec)
+		self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
 	unittest.main()
