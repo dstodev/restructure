@@ -11,7 +11,7 @@ def restructure(data: dict, specification: dict):
 	A key-path is a dot-delimited string of keys e.g. 'key1.key2.key3', useful for indexing
 	into nested dictionaries. For example, 'key1.key2.key3' is an index to 'value1':
 
-	data = {
+	input_data = {
 		'key1': {
 			'key2': {
 				'key3': 'value',
@@ -25,7 +25,7 @@ def restructure(data: dict, specification: dict):
 
 	So, for example, the restructure specification:
 
-	spec = {
+	specification = {
 		'key1.key2.key3': 'key.data',
 	}
 
@@ -40,14 +40,14 @@ def restructure(data: dict, specification: dict):
 	Destinations can also be sets of key-paths, in which case the source value will be copied to
 	all destinations. For example:
 
-	data = {
+	input_data = {
 		'key1': {
 			'key2': {
 				'key3': 'value1',
 			},
 		},
 	}
-	spec = {
+	specification = {
 		'key1.key2.key3': {'key1.key2.key3.key4', 'key1.key2.key5', 'key1.key6', 'key7'},
 	}
 	output = {
@@ -61,6 +61,13 @@ def restructure(data: dict, specification: dict):
 			'key6': 'value1',
 		},
 		'key7': 'value1',
+	}
+
+	Keys can be removed by specifying a destination of None or an empty string:
+
+	specification = {
+		'key1.key2': None,
+		'key3': '',
 	}
 
 	:param data: Data to restructure.

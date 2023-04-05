@@ -155,6 +155,32 @@ assert output == {
 }
 ```
 
+### Removing Keys
+
+Keys can be removed by providing `None` or an empty string:
+
+```python
+input_data = {
+	'key1': {
+		'key2': 'value1',
+		'key3': 'value2',
+		'key4': 'value3',
+	},
+}
+specification = {
+	'key1.key3': None,
+	'key1.key4': '',
+}
+
+output = restructure(input_data, specification)
+
+assert output == {
+	'key1': {
+		'key2': 'value1',
+	},
+}
+```
+
 ## For Developers
 
 - Follows [Semantic Versioning 2.0.0](https://semver.org/)
